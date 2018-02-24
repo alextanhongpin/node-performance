@@ -6,28 +6,31 @@ function delay (duration) {
   })
 }
 
-function callAPI () {
+function callAPI (i) {
   return new Promise((resolve, reject) => {
     const options = {
+      uri: 'http://localhost:4000/',
+      method: 'POST',
+      body: {
+        name: i % 2 === 0 ? 'john' : 'jane'
+      },
       json: true
     }
-    request('http://localhost:4000/', options, function (error, response, body) {
+    request(options, function (error, response, body) {
       // console.log(response && response.statusCode)
-      console.log(response && response.headers, body, error)
+      // console.log(response && response.headers, body, error)
       error ? reject(error) : resolve([body, response && response.statusCode])
     })
   })
 }
-
 async function call (iteration = 0, threshold = 0) {
   const arr = Array(100).fill(0)
-  const promises = arr.map(() => {
-    return callAPI()
+  const promises = arr.map((_, i) => {
+    return callAPI(i)
   })
 
   try {
     const data = await Promise.all(promises)
-    console.log('data:', data)
     const isRateLimited = data.map(([body, statusCode]) => statusCode).some(code => code === 429)
     const numErrors = data.map(([body, statusCode]) => statusCode).filter(code => code > 400 && code !== 429).length
     if (numErrors) {
@@ -43,6 +46,8 @@ async function call (iteration = 0, threshold = 0) {
       console.log('done', iteration)
       if (iteration < 10) {
         call(iteration, threshold)
+      } else {
+        console.timeEnd()
       }
     } else {
       console.log('Rate limited, waiting 1 second')
@@ -59,4 +64,5 @@ async function call (iteration = 0, threshold = 0) {
   }
 }
 
+console.time()
 call().catch(console.error)

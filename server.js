@@ -13,9 +13,13 @@
 // } else {
   const RateLimiter = require('limiter').RateLimiter
   const express = require('express')
+  const bodyParser = require('body-parser')
   const app = express()
 
   const limiter = new RateLimiter(60, 'second')
+
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extended: false}))
 
   app.get('/', (req, res) => {
     console.log('hitting')
@@ -30,6 +34,20 @@
         })
       }
     })
+  })
+
+  app.post('/', (req, res) => {
+    if (req.body.name === 'john') {
+      console.log('hitting john')
+      res.status(200).json({
+        name: req.body.name
+      })
+    } else {
+      console.log('hitting others')
+      res.status(200).json({
+        name: req.body.name
+      })
+    }
   })
 
   app.listen(3000, () => {
