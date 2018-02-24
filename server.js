@@ -18,6 +18,7 @@ if (cluster.isMaster) {
   const limiter = new RateLimiter(60, 'second')
 
   app.get('/', (req, res) => {
+    console.log('hitting')
     limiter.removeTokens(1, (err, remaining) => {
       if (err || remaining < 1) {
         console.log('Too many requests')

@@ -11,8 +11,9 @@ function callAPI () {
     const options = {
       json: true
     }
-    request('http://localhost:3000/', options, function (error, response, body) {
+    request('http://localhost:4000/', options, function (error, response, body) {
       // console.log(response && response.statusCode)
+      console.log(response && response.headers, body, error)
       error ? reject(error) : resolve([body, response && response.statusCode])
     })
   })
@@ -26,6 +27,7 @@ async function call (iteration = 0, threshold = 0) {
 
   try {
     const data = await Promise.all(promises)
+    console.log('data:', data)
     const isRateLimited = data.map(([body, statusCode]) => statusCode).some(code => code === 429)
     const numErrors = data.map(([body, statusCode]) => statusCode).filter(code => code > 400 && code !== 429).length
     if (numErrors) {
