@@ -1,16 +1,16 @@
-const cluster = require('cluster')
-const numCPUs = require('os').cpus().length
+// const cluster = require('cluster')
+// const numCPUs = require('os').cpus().length
 
-if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`)
+// if (cluster.isMaster) {
+//   console.log(`Master ${process.pid} is running`)
 
-  for (let i = 0; i < numCPUs; i += 1) {
-    cluster.fork()
-  }
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`)
-  })
-} else {
+//   for (let i = 0; i < numCPUs; i += 1) {
+//     cluster.fork()
+//   }
+//   cluster.on('exit', (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`)
+//   })
+// } else {
   const RateLimiter = require('limiter').RateLimiter
   const express = require('express')
   const app = express()
@@ -35,4 +35,4 @@ if (cluster.isMaster) {
   app.listen(3000, () => {
     console.log(`listening to port *:3000. press ctrl + c to cancel.`)
   })
-}
+// }
