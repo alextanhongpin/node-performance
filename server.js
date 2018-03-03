@@ -62,7 +62,13 @@ app.get('/no-limit', async (req, res) => {
   const interval = preciseTime() - start
   console.log(interval)
   res.status(200).json({
-    msg: 'hello world'
+    msg: 'get hello world'
+  })
+})
+
+app.post('/no-limit', (req, res) => {
+  res.status(200).json({
+    msg: req.body
   })
 })
 

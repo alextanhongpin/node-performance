@@ -1,7 +1,10 @@
-test-standard:
+test-get:
 	ab -T application/json -c 25 -n 1000 http://localhost:3000/no-limit
 
-test-nginx:
+test-post:
+	ab -p post.txt -T application/json -c 25 -n 1000 http://localhost:3000/no-limit
+
+test-nginx-get:
 	ab -T application/json -c 25 -n 1000 http://localhost:4000/no-limit
 
 prof:
