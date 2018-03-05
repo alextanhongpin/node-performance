@@ -57,10 +57,10 @@ app.post('/', (req, res) => {
 })
 
 app.get('/no-limit', async (req, res) => {
-  const start = preciseTime()
-  await delay(250)
-  const interval = preciseTime() - start
-  console.log(interval)
+  // const start = preciseTime()
+  // await delay(250)
+  // const interval = preciseTime() - start
+  // console.log(interval)
   res.status(200).json({
     msg: 'get hello world'
   })
